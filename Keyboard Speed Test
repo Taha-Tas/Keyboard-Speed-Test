@@ -1,1 +1,218 @@
-Hello. This is one of my several projects. The purpose of the application is to help increase your typing speed. Currently, there are few words, but more will be added later.
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Threading;
+
+namespace Keyboard_Speed_Test
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+        List<Int16> numbers;
+        List<String> words;
+        int seconds = 60;
+        int trueWords = 0;
+        int wrongWords = 0;
+        int point = 0;
+        private void button1_Click(object sender, EventArgs e)
+        {
+            btnStart.Text = "STARTED";
+            btnStart.Enabled = false;
+            txtOutput.Clear();
+            txtInput.ReadOnly = false;
+            timer1.Start();
+            txtInput.Select();
+            allWord();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            seconds--;
+            lblTime.Text = seconds.ToString();
+            if (seconds == 0)
+            {
+                timer1.Stop();
+                txtInput.ReadOnly = true;
+                point = trueWords / wrongWords + seconds + 1;
+                MessageBox.Show("Time is finished."+Environment.NewLine+
+                "- Total words typed: "+Convert.ToInt16(wrongWords+trueWords)+Environment.NewLine+Environment.NewLine+
+                "- Number of correct words typed: "+trueWords+Environment.NewLine+
+                "- Number of incorrect words typed: "+wrongWords+Environment.NewLine+
+                "- Total score: "+point, "Time Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
+                seconds = 60;
+                trueWords = 0;
+                wrongWords = 0;
+                point = 0;
+                btnStart.Text = "START";
+                btnStart.Enabled = true;
+                txtOutput.Clear();
+                txtInput.Clear();
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            timer1.Interval = 1000;
+            
+            txtInput.Select();
+        }
+        public void allWord()
+        {
+            numbers = new List<Int16>();
+            words = new List<String>();
+            words.Add("abandon");
+            words.Add("ability");
+            words.Add("able");
+            words.Add("abortion");
+            words.Add("about");
+            words.Add("above");
+            words.Add("abroad");
+            words.Add("absence");
+            words.Add("absolute");
+            words.Add("absolutely");
+            words.Add("absorb");
+            words.Add("abuse");
+            words.Add("academic");
+            words.Add("accept");
+            words.Add("access");
+
+            words.Add("besides");
+            words.Add("best");
+            words.Add("bike");
+            words.Add("black");
+            words.Add("birth");
+            words.Add("blood");
+            words.Add("blood");
+            words.Add("between");
+            words.Add("beyond");
+            words.Add("blow");
+            words.Add("blame");
+            words.Add("blade");
+            words.Add("birthday");
+            words.Add("bird");
+            words.Add("bind");
+
+            words.Add("capital");
+            words.Add("captain");
+            words.Add("capture");
+            words.Add("car");
+            words.Add("carbon");
+            words.Add("card");
+            words.Add("care");
+            words.Add("career");
+            words.Add("careful");
+            words.Add("carefully");
+            words.Add("carrier");
+            words.Add("carry");
+            words.Add("case");
+            words.Add("cash");
+            words.Add("cast");
+            words.Add("cat");
+            words.Add("catch");
+            words.Add("category");
+            words.Add("cause");
+            words.Add("celebrate");
+            words.Add("content");
+            words.Add("contest");
+            words.Add("continue");
+            words.Add("continued");
+
+            words.Add("dealer");
+            words.Add("dear");
+            words.Add("death");
+            words.Add("debate");
+            words.Add("debt");
+            words.Add("decade");
+            words.Add("decide");
+            words.Add("decision");
+            words.Add("declare");
+            words.Add("decline");
+            words.Add("decrease");
+            words.Add("deep");
+            words.Add("deeply");
+            words.Add("deer");
+            words.Add("defeat");
+            words.Add("defend");
+            words.Add("defendant");
+            words.Add("definitely");
+            words.Add("deliver");
+            words.Add("demand");
+            words.Add("democratic");
+
+            words.Add("embrace");
+            words.Add("elsewhere");
+            words.Add("embremergeace");
+            words.Add("emergency");
+            words.Add("emotion");
+            words.Add("emotional");
+            words.Add("emphasis");
+            words.Add("emphasize");
+            words.Add("employ");
+            words.Add("employee");
+            words.Add("employment");
+            words.Add("empty");
+            words.Add("enable");
+            words.Add("enemy");
+            words.Add("energy");
+            words.Add("enforcement");
+            words.Add("engage");
+            words.Add("engine");
+            words.Add("engineer");
+            words = words.OrderBy(a => Guid.NewGuid()).ToList();
+            foreach (string word in words)
+            {
+                txtOutput.Text += word + " ";
+            }
+        }
+
+        private void txtInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                if (txtInput.Text.Trim().Equals(words[0]))
+                {
+                    words.RemoveAt(0);
+                    trueWords++;
+                    txtOutput.Clear();
+                    txtInput.Clear();
+                    foreach (string word in words)
+                    {
+                        txtOutput.Text += " " + word;
+                    }
+                }
+                else
+                {
+                    words.RemoveAt(0);
+                    wrongWords++;
+                    txtOutput.Clear();
+                    txtInput.Clear();
+                    foreach (string word in words)
+                    {
+                        txtOutput.Text += " " + word;
+                    }
+                }
+                if (words.Count == 0)
+                {
+                    
+                }
+                
+            }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+    }
+}
